@@ -1,0 +1,111 @@
+import json
+
+# Long and short versions of country names in a dictionary (not unique)
+country_name_mapping = {'Afghanistan, Islamic Rep. of': 'Afghanistan', 'Armenia, Rep. of': 'Armenia', 'Azerbaijan, Rep. of': 'Azerbaijan',
+                        'Bahamas, The': 'Bahamas', 'Bahrain, Kingdom of': 'Bahrain', 'Belarus, Rep. of': 'Belarus', 
+                        'China, P.R.: Hong Kong': 'Hong Kong', 'China, P.R.: Mainland': 'China', 'Congo, Rep. of': 'Congo', 
+                        'Croatia, Rep. of': 'Croatia', 'Czech Rep.': 'Czech Republic', '"Côte d\'Ivoire"': 'Cote dIvoire', 
+                        'Dominican Rep.': 'Dominican Republic', 'Egypt, Arab Rep. of': 'Egypt', 'Equatorial Guinea, Rep. of': 'Equatorial Guinea',
+                        'Estonia, Rep. of': 'Estonia', 'Ethiopia, The Federal Dem. Rep. of': 'Ethiopia', 'Fiji, Rep. of': 'Fiji', 
+                        'Iran, Islamic Rep. of': 'Iran', 'Kazakhstan, Rep. of': 'Kazakhstan', 'Korea, Rep. of': 'South Korea', 
+                        'Kosovo, Rep. of': 'Kosovo', 'Kyrgyz Rep.': 'Kyrgyzstan', 'Marshall Islands, Rep. of the': 'Marshall Islands', 
+                        'Micronesia, Federated States of': 'Micronesia', 'Moldova, Rep. of': 'Moldova', 'Nauru, Rep. of': 'Nauru', 
+                        'Netherlands, The': 'Netherlands', 'North Macedonia, Republic of ': 'North Macedonia', 'Palau, Rep. of': 'Palau', 
+                        'Poland, Rep. of': 'Poland', 'Russian Federation': 'Russia', 'San Marino, Rep. of': 'San Marino', 
+                        'Serbia, Rep. of': 'Serbia', 'Slovak Rep.': 'Slovakia', 'Slovenia, Rep. of': 'Slovenia', 
+                        'Tanzania, United Rep. of': 'Tanzania', 'Timor-Leste, Dem. Rep. of': 'Timor-Leste', 
+                        'Türkiye, Rep. of': 'Turkey', 'Uzbekistan, Rep. of': 'Uzbekistan', 'Yemen, Rep. of': 'Yemen',
+                        'Republic of Croatia': 'Croatia','Grand Duchy of Luxembourg': 'Luxembourg','Kingdom of Thailand': 'Thailand',
+                        'Republic of Serbia': 'Serbia','Republic of Korea': 'South Korea','Republic of Lithuania': 'Lithuania',
+                        'Republic of Uzbekistan': 'Uzbekistan','Federative Republic of Brazil': 'Brazil','State of Kuwait': 'Kuwait',
+                        'Argentine Republic': 'Argentine','French Republic': 'France','Republic of Tajikistan': 'Tajikistan',
+                        'Kingdom of the Netherlands': 'Netherlands','Republic of Slovenia': 'Slovenia','Taiwan (Province of China)': 'Taiwan',
+                        'Socialist Republic of Viet Nam': 'Viet Nam','Republic of Azerbaijan': 'Azerbaijan','Republic of Peru': 'Peru',
+                        'Hellenic Republic': 'Greece','Republic of Cuba': 'Cuba','Republic of Tunisia': 'Tunisia','Republic of Suriname': 'Surniame',
+                        'Russian Federation': 'Russia','United Mexican States': 'Mexico','Federated States of Micronesia': 'Micronesia',
+                        'Republic of Austria': 'Austria','Eastern Republic of Uruguay': 'Uruguay','Republic of the Union of Myanmar': 'Myanmar',
+                        'Independent State of Samoa': 'Samoa','People\'s Republic of Bangladesh': 'Bangladesh','Republic of Fiji': 'Fiji',
+                        'Swiss Confederation': 'Swiss','Kingdom of Tonga': 'Tonga','Kingdom of Cambodia': 'Cambodia','Kingdom of Bahrain': 'Bahrain',
+                        'Republic of Colombia': 'Colombia','Democratic Republic of the Congo': 'Congo (Kinshasa)','Republic of Armenia': 'Armenia',
+                        'State of Libya': 'Libya','Portuguese Republic': 'Portuguese','Islamic Republic of Iran': 'Iran','Republic of Italy': 'Italy',
+                        'Republic of Malta': 'Malta','Democratic People\'s Republic of Korea': 'North Korea','Republic of El Salvador': 'El Salvador',
+                        'Republic of Albania': 'Albania','Republic of Kazakhstan': 'Kazakhstan','Commonwealth of the Bahamas': 'Bahamas',
+                        'United Kingdom of Great Britain and Northern Ireland': 'United Kingdom','Republic of Chile': 'Chile',
+                        'Republic of Belarus': 'Belarus','Republic of Bulgaria': 'Bulgaria','Republic of Vanuatu': 'Vanuatu',
+                        'Kingdom of Sweden': 'Sweden','Republic of Moldova': 'Moldova','Islamic Republic of Pakistan': 'Pakistan',
+                        'Republic of Cyprus': 'Cyprus','Democratic Socialist Republic of Sri Lanka': 'Sri Lanka','Republic of Latvia': 'Latvia',
+                        'Kingdom of Norway': 'Norway','Republic of the Marshall Islands': 'Marshall Islands',
+                        'Islamic Republic of Afghanistan': 'Afghanistan','Republic of Nicaragua': 'Nicaragua','Republic of Guyana': 'Guyana',
+                        'Republic of Panama': 'Panama','Republic of Madagascar': 'Madagascar','Syrian Arab Republic': 'Syria',
+                        'Republic of Angola': 'Angola','Slovak Republic': 'Slovakia','State of Qatar': 'Qatar',
+                        'Plurinational State of Bolivia': 'Bolivia','Federal Republic of Germany': 'Germany','Republic of Finland': 'Finland',
+                        'Lao People\'s Democratic Republic': 'Laos','Republic of Maldives': 'Maldives','Republic of Kenya': 'Kenya',
+                        'Republic of Iceland': 'Iceland','Republic of Ecuador': 'Ecuador','People\'s Democratic Republic of Algeria': 'Algeria',
+                        'Republic of the Congo': 'Congo (Brazzaville)','Republic of Honduras': 'Honduras','Lebanese Republic': 'Lebanon',
+                        'Principality of Andorra': 'Andorra','Hashemite Kingdom of Jordan': 'Jordan','Republic of the Philippines': 'Philippines',
+                        'Republic of Singapore': 'Singapore','Commonwealth of Dominica': 'Dominica',
+                        'Democratic Republic of Timor-Leste': 'Timor-Leste','Republic of Mauritius': 'Mauritius','Union of the Comoros': 'Comoros',
+                        'People\'s Republic of China': 'China','Republic of Zimbabwe': 'Zimbabwe',
+                        'Independent State of Papua New Guinea': 'Papua New Guinea','Republic of Paraguay': 'Paraguay','Republic of India': 'India',
+                        'Kingdom of Belgium': 'Belgium','Kingdom of Morocco': 'Morocco','Republic of Indonesia': 'Indonesia',
+                        'Republic of Costa Rica': 'Costa Rica','Republic of Trinidad and Tobago': 'Trinidad and Tobago',
+                        'Republic of Zambia': 'Zambia','State of Eritrea': 'Eritrea','Republic of Yemen': 'Yemen','Arab Republic of Egypt': 'Egypt',
+                        'Republic of South Sudan': 'South Sudan','Republic of Turkey': 'Turkey','Republic of Guatemala': 'Guatemala',
+                        'Republic of the Niger': 'Niger','Republic of Poland': 'Poland','Kingdom of Spain': 'Spain','Gabonese Republic': 'Gabon',
+                        'Bolivarian Republic of Venezuela': 'Venezuela','Republic of Estonia': 'Estonia','Kingdom of Denmark': 'Denmark',
+                        'Republic of Cabo Verde': 'Cabo Verde','Sultanate of Oman': 'Oman','Republic of Guinea-Bissau': 'Guinea-Bissau',
+                        'Kyrgyz Republic': 'Kyrgyzstan','Republic of Côte d\'Ivoire': 'Cote d\'Ivoire','Republic of Mali': 'Mali',
+                        'Republic of Rwanda': 'Rwanda','State of Israel': 'Israel','Federal Republic of Somalia': 'Somalia',
+                        'Republic of Kiribati': 'Kiribati','Republic of Iraq': 'Iraq','Republic of Palau': 'Palau','Republic of Malawi': 'Malawi',
+                        'Kingdom of Saudi Arabia': 'Saudi Arabia','Federal Democratic Republic of Ethiopia': 'Ehtiopia',
+                        'Republic of Botswana': 'Botswana','Federal Republic of Nigeria': 'Nigeria','Republic of Ghana': 'Ghana',
+                        'Republic of Equatorial Guinea': 'Equatorial Guinea','Republic of Namibia': 'Namibia','Kingdom of Eswatini': 'Eswatini',
+                        'Republic of Uganda': 'Uganda','Republic of Burundi': 'Burundi','Republic of Senegal': 'Senegal',
+                        'Republic of Djibouti': 'Djibouti','Republic of Haiti': 'Haiti','Republic of Benin': 'Benin','Republic of Sudan': 'Sudan',
+                        'Kingdom of Bhutan': 'Bhutan','United States Virgin Islands': 'Virgin Islands (U.S.)','Republic of Cameroon': 'Cameroon',
+                        'Republic of Nauru': 'Nauru','Principality of Monaco': 'Monaco','Republic of South Africa': 'South Africa',
+                        'Republic of Chad': 'Chad','Republic of San Marino': 'San Marino','Republic of the Gambia': 'Gambia',
+                        'Federal Democratic Republic of Nepal': 'Nepal','Republic of Mozambique': 'Mozambique',
+                        'Islamic Republic of Mauritania': 'Mauritania','Togolese Republic': 'Togo','Kingdom of Lesotho': 'Lesotho',
+                        'Republic of Seychelles': 'Seychelles','Republic of Guinea': 'Guinea','United Republic of Tanzania': 'Tanzania',
+                        'Republic of Sierra Leone': 'Sierra Leone','Democratic Republic of Sao Tome and Principe': 'Sao Tome and Principe',
+                        'Republic of Liberia': 'Liberia','Republic of Niue': 'Niue', 'Bahamas, The': 'Bahamas','Congo, Dem. Rep.': 'Congo (Kinshasa)',
+                        'Congo, Rep.': 'Congo (Brazzaville)','Egypt, Arab Rep.': 'Egypt','Gambia, The': 'Gambia',
+                        'Hong Kong SAR, China': 'Hong Kong (China)', 'Iran, Islamic Rep.': 'Iran',
+                         'Korea Dem. People\'s Rep.': 'North Korea','Korea, Rep.': 'South Korea','Kyrgyz Republic': 'Kyrgyzstan',
+                         'Lao PDR': 'Laos','Macao SAR, China': 'Macao (China)','Micronesia, Fed. Sts.': 'Micronesia','Russian Federation': 'Russia',
+                         'Syrian Arab Republic': 'Syria','Venezuela, RB': 'Venezuela','Yemen, Rep.': 'Yemen'
+                         }
+
+# Short names for variables (expenditure and DALY indicator variables; unique)
+variable_name_mapping = {'Environmental Protection Expenditures': 'ENV_EXP_Prot', 
+                        'Expenditure on Biodiversity & Landscape Protection': 'ENV_EXP_BIODIV',
+                        'Expenditure on Environmental Protection Not Elsewhere Classified': 'ENV_EXP_OTHER',
+                        'Expenditure on Environmental Protection R&D': 'ENV_EXP_ResDev',
+                        'Expenditure on Pollution Abatement': 'ENV_EXP_POLLUTION',
+                        'Expenditure on Waste Management': 'ENV_EXP_WASTE',
+                        'Expenditure on Waste Water Management': 'ENV_EXP_WASTEWATER',
+                        'Air pollution': 'DALY_AIR_POLLUTION',
+                        'Ambient ozone pollution': 'DALY_OZONE_POLLUTION',
+                        'High temperature': 'DALY_HIGH_TEMP',
+                        'Lead exposure': 'DALY_LEAD_EXPOSURE',
+                        'Low temperature': 'DALY_LOW_TEMP',
+                        'No access to handwashing facility': 'DALY_NO_ACCESS_HANDWASHING', 
+                        'Other environmental risks': 'DALY_OTHER_ENV_RISKS', 
+                        'Particulate matter pollution': 'DALY_PARTICULATE_MATTER_POLLUTION',
+                        'Residential radon': 'DALY_RESIDENTIAL_RADON', 
+                        'Unsafe sanitation': 'DALY_UNSAFE_SANITATION', 
+                        'Unsafe water source': 'DALY_UNSAFE_WATER_SOURCE'
+                        }
+
+# Convert dictionary keys to tuples
+country_key_tuples = [tuple(key.split('_')) for key in country_name_mapping.keys()]
+# Filter out duplicates
+unique_country_key_tuples = list(set(country_key_tuples))
+# Create new dictionary with unique tuples
+unique_country_tuples_dict = {('_'.join(key_tuple)): country_name_mapping['_'.join(key_tuple)] for key_tuple in unique_country_key_tuples}
+# Save dictionary with unique tuples in '../datasets' folder
+with open('../code/datasets/country_name_mapping.json', 'w') as json_file:
+    json.dump(unique_country_tuples_dict, json_file)
+with open('../code/datasets/variable_name_mapping.json', 'w') as json_file:
+    json.dump(variable_name_mapping, json_file)

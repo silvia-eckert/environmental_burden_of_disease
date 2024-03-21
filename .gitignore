@@ -1,8 +1,7 @@
 data/**
-
-
-
-
+datasets/**
+code/datasets/**
+models/**
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -112,3 +111,6 @@ venv.bak/
 .mypy_cache/
 
 .DS_Store
+
+# Visual Studio Code workspace files
+*.code-workspace

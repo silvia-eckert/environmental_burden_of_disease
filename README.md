@@ -1,19 +1,15 @@
-# Data Science Lifecycle Base Repo
+# Environmental Burden of Disease Dashboard
 
-Use this repo as a template repository for data science projects using the Data Science Life Cycle Process. This repo is meant to serve as a launch off point. Our goal is to introduce only **minimum viable opinions** into the structure of this repo in order to make this repository/framework useful across a variety of data science projects and workflows. Therefore, we will tend to err to the side of omitting something if we're not confident that it's widely useful or think it's overly opinionated. That shouldn't stop you from forking this repo and adapting it to fit the needs of your project/team/organization.
+## The underlying concept
+The environmental burden of disease refers to the impact that environmental factors, such as pollution or climate change might have on human health. These factors can contribute to loss of life years and declining health, leading to morbidity and mortality. Impact on human health can be measured as DALYs, i.e. disability-adjusted life years.
 
-With that in mind, if there is something that you think we're missing or should change, open an issue and we'll talk!
+## About this project
+This repository contains a dashboard that visualizes DALY indicators related to the environmental burden of disease for the years 2010-2019. Through interactive visualizations, users can explore trends and patterns per country. Feel free to explore the dashboard.
 
-## Get started.
+## Get started
+The only manual step required is that you have to download the data and run the EDA.pynb file.
 
-The only manual step required is that you have to manually create the labels. The label names, descriptions, and color codes can be found in the [.github/labels.yaml](/.github/labels.yaml) file. For more information on creating labels, review the GitHub docs [here](https://help.github.com/en/github/managing-your-work-on-github/creating-a-label).
-
-## Contributing
-
-Issues and suggestions for this template repo should be opened in the main [dslp repo](https://github.com/MicrosoftDSST/dslp/issues).
-
-## Default Directory Structure
-
+## Directory Structure
 ```
 ├── .cloud              # for storing cloud configuration files and templates (e.g. ARM, Terraform, etc)
 ├── .github
